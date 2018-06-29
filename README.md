@@ -25,7 +25,15 @@ list:
 
 filename doesn't matter
 
-Example 1 (int enum)
+## Generate enum.go
+
+```
+enum -fp=exam.enum
+```
+
+## Example
+
+### int enum
 ```
 type: 
     int
@@ -38,20 +46,68 @@ list:
     South = 3
 ```
 
-Example 2 (int enum use iota keyword)
+result:
+```
+package direction
+
+// Alias hide the real type of the enum 
+// and users can use it to define the var for accepting enum 
+type Alias = int
+
+type list struct { 
+    West Alias
+    East Alias
+    North Alias
+    South Alias
+}
+
+// Enum for public use
+var Enum = &list{ 
+	West: 0,
+	East: 1,
+	North: 2,
+	South: 3,
+}
+```
+
+### int enum use iota keyword
 ```
 type: 
     int
 name: 
     direction
 list:
-    West = iota
-    East
-    North
+    West = 9
+    east = 8
+    North = iota
     South
 ```
 
-Example 3 (string enum)
+result:
+```
+package direction
+
+// Alias hide the real type of the enum 
+// and users can use it to define the var for accepting enum 
+type Alias = int
+
+type list struct { 
+    West Alias
+    East Alias
+    North Alias
+    South Alias
+}
+
+// Enum for public use
+var Enum = &list{ 
+	West: 9,
+	East: 8,
+	North: 0,
+	South: 1,
+}
+```
+
+### string enum
 ```
 type: 
     string
@@ -64,8 +120,26 @@ list:
     South = "S"
 ```
 
-## Generate enum.go
-
+result:
 ```
-enum -fp=exam.enum
+package direction
+
+// Alias hide the real type of the enum 
+// and users can use it to define the var for accepting enum 
+type Alias = string
+
+type list struct { 
+    West Alias
+    East Alias
+    North Alias
+    South Alias
+}
+
+// Enum for public use
+var Enum = &list{ 
+	West: "W",
+	East: "E",
+	North: "N",
+	South: "S",
+}
 ```
