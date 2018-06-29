@@ -1,0 +1,9 @@
+type: 
+    string
+name: 
+    direction
+list:
+    West = "W"
+    East = "E"
+    North = "N"
+    South = "S"

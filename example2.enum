@@ -1,0 +1,9 @@
+type: 
+    int
+name: 
+    direction
+list:
+    West = 9
+    east = 8
+    North = iota
+    South
