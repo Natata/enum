@@ -63,10 +63,10 @@ type list struct {
 
 // Enum for public use
 var Enum = &list{ 
-	West: 0,
-	East: 1,
-	North: 2,
-	South: 3,
+    West: 0,
+    East: 1,
+    North: 2,
+    South: 3,
 }
 ```
 
@@ -100,10 +100,10 @@ type list struct {
 
 // Enum for public use
 var Enum = &list{ 
-	West: 9,
-	East: 8,
-	North: 0,
-	South: 1,
+    West: 9,
+    East: 8,
+    North: 0,
+    South: 1,
 }
 ```
 
@@ -137,9 +137,9 @@ type list struct {
 
 // Enum for public use
 var Enum = &list{ 
-	West: "W",
-	East: "E",
-	North: "N",
-	South: "S",
+    West: "W",
+    East: "E",
+    North: "N",
+    South: "S",
 }
 ```
