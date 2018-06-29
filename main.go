@@ -7,10 +7,9 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 	"text/template"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 var (
@@ -27,7 +26,7 @@ type Config struct {
 // Pair struct
 type Pair struct {
 	N string
-	V interface{}
+	V string
 }
 
 func main() {
@@ -50,7 +49,11 @@ func main() {
 		log.Printf("parse content fail, error: %v", err)
 		return
 	}
-	spew.Dump(cfg)
+
+	err = checkConfig(cfg)
+	if err != nil {
+		log.Printf("check config fail, error %v", err)
+	}
 
 	tmpl, err := template.New("enum").Parse(templateText)
 	if err != nil {
@@ -58,7 +61,7 @@ func main() {
 		return
 	}
 
-	nf, err := os.Create("test.go")
+	nf, err := os.Create("enum.go")
 	if err != nil {
 		log.Printf("create file fail, error: %v", err)
 		return
@@ -174,6 +177,44 @@ func parse(mode int, section []string, cfg *Config) error {
 	return nil
 }
 
+func checkConfig(cfg *Config) error {
+	cfg.Name = strings.ToLower(cfg.Name)
+	cfg.Type = strings.ToLower(cfg.Type)
+
+	// only support string and int
+	if cfg.Type != "string" && cfg.Type != "int" {
+		err := fmt.Errorf("not support data type: %v", cfg.Type)
+		log.Print(err.Error())
+		return err
+	}
+
+	setElementsNameCapital(cfg)
+	setElementsValue(cfg)
+	return nil
+}
+
+func setElementsNameCapital(cfg *Config) {
+	for i := range cfg.Elements {
+		cfg.Elements[i].N = strings.Title(cfg.Elements[i].N)
+	}
+}
+
+func setElementsValue(cfg *Config) {
+	if cfg.Type == "string" {
+		return
+	}
+
+	inc := 0
+	for i := range cfg.Elements {
+		if cfg.Elements[i].V == "iota" {
+			inc = 0
+		}
+
+		cfg.Elements[i].V = strconv.Itoa(inc)
+		inc++
+	}
+}
+
 func trim(s string) string {
 	return strings.Trim(s, "\n\t ")
 }
@@ -184,8 +225,12 @@ var templateText = `package {{.Name}}
 // and users can use it to define the var for accepting enum 
 type Alias = {{.Type}}
 
-// Enum stuct
-type Enum struct { {{range $i, $v := (.Elements)}} 
+type list struct { {{range $i, $v := (.Elements)}}
     {{$v.N}} Alias{{end}}
+}
+
+// Enum for public use
+var Enum = &list{ {{range $i, $v := (.Elements)}}
+	{{$v.N}}: {{$v.V}},{{end}}
 }
 `

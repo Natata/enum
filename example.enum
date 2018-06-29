@@ -1,9 +1,9 @@
 type: 
     int
 name: 
-    Direction
+    direction
 list:
     West = iota
-    East
+    east
     North
     South
