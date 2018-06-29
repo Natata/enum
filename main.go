@@ -207,11 +207,13 @@ func setElementsValue(cfg *Config) {
 	inc := 0
 	for i := range cfg.Elements {
 		if cfg.Elements[i].V == "iota" {
+			cfg.Elements[i].V = ""
 			inc = 0
 		}
-
-		cfg.Elements[i].V = strconv.Itoa(inc)
-		inc++
+		if cfg.Elements[i].V == "" {
+			cfg.Elements[i].V = strconv.Itoa(inc)
+			inc++
+		}
 	}
 }
 
