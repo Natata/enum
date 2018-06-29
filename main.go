@@ -233,6 +233,6 @@ type list struct { {{range $i, $v := (.Elements)}}
 
 // Enum for public use
 var Enum = &list{ {{range $i, $v := (.Elements)}}
-	{{$v.N}}: {{$v.V}},{{end}}
+    {{$v.N}}: {{$v.V}},{{end}}
 }
 `
